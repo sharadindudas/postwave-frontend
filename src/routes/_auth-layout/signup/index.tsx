@@ -1,16 +1,17 @@
 import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
+import CustomCheckbox from "@/components/common/custom-checkbox";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
 import { cn } from "@/lib/utils";
-import { LoginSchema } from "@/schemas/auth";
+import { SignupSchema } from "@/schemas/auth";
 import { useForm, useStore } from "@tanstack/react-form";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/_auth-layout/login/")({
+export const Route = createFileRoute("/_auth-layout/signup/")({
   component: RouteComponent
 });
 
@@ -19,30 +20,31 @@ function RouteComponent() {
 
   const form = useForm({
     defaultValues: {
+      name: "",
       email: "",
       password: ""
-    } as LoginSchema,
+    } as SignupSchema,
     validators: {
-      onSubmit: LoginSchema
+      onSubmit: SignupSchema
     },
     onSubmit: async ({ value }) => {
       try {
         console.log(value);
-        toast.success("Logged in successfully");
-        form.reset();
+        toast.success("Registered successfully");
       } catch (err: any) {
-        toast.error(err.message ?? "Failed to login");
+        toast.error(err.message ?? "Failed to register");
       }
     }
   });
+
   const password = useStore(form.store, (state) => state.values.password);
 
   return (
     <>
-      <div className="space-y-3">
+      <div className="space-y-2">
         <InkwaveLogoBigIcon className="mb-10" />
-        <h3 className="text-3xl font-semibold text-cc-primary-2">Log In to Inkwave</h3>
-        <p className="text-cc-primary-2-400 text-sm">Welcome back! Stay updated with the latest insights from our exclusive newsletter.</p>
+        <h3 className="text-3xl font-semibold text-cc-primary-2">Let's get started with Launch ✨</h3>
+        <p className="text-cc-primary-2-400 text-sm">One-time phone verification via SMS is required for signup. Msg and data rates may apply.</p>
       </div>
       <form
         noValidate
@@ -52,6 +54,24 @@ function RouteComponent() {
           form.handleSubmit();
         }}
         className="mt-10 mb-14 text-sm space-y-5">
+        <form.Field name="name">
+          {(field) => (
+            <CustomFormField
+              label="Name *"
+              field={field}>
+              <CustomInputField
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                type="text"
+                placeholder="Name"
+                className={cn(!field.state.meta.isValid && "text-cc-alert-1 border-cc-alert-1 focus-visible:border-cc-alert-1 focus-visible:ring-0")}
+              />
+            </CustomFormField>
+          )}
+        </form.Field>
         <form.Field name="email">
           {(field) => (
             <CustomFormField
@@ -65,7 +85,7 @@ function RouteComponent() {
                 onChange={(e) => field.handleChange(e.target.value)}
                 type="email"
                 placeholder="Email"
-                className={cn(!field.state.meta.isValid && "text-cc-alert-1 border-cc-alert-1 focus-visible:border-cc-alert-1")}
+                className={cn(!field.state.meta.isValid && "text-cc-alert-1 border-cc-alert-1 focus-visible:border-cc-alert-1 focus-visible:ring-0")}
               />
             </CustomFormField>
           )}
@@ -101,7 +121,6 @@ function RouteComponent() {
             </CustomFormField>
           )}
         </form.Field>
-
         <form.Subscribe
           selector={(state) => [state.isValid, state.isSubmitting]}
           children={([isValid, isSubmitting]) => (
@@ -110,23 +129,34 @@ function RouteComponent() {
               isSubmitting={isSubmitting}
               variant="pink"
               className="w-full mb-4"
-              children="Login"
+              children="Get Started"
             />
           )}
         />
-        <div className="text-center font-medium text-sm mt-5">
-          <Link
-            to="/forgot-password"
-            className="text-cc-primary underline">
-            Forgot your password?
-          </Link>
+        {/* <GoogleLoginButton /> */}
+        <div className="text-center font-medium text-sm">
           <p className="space-x-2 mt-4">
-            <span className="text-cc-primary-2-400">Don&apos;t have a Inkwave account?</span>
+            <span className="text-cc-primary-2-400">Already have an account?</span>
             <Link
-              to="/signup"
+              to="/login"
               className="text-cc-primary underline">
-              Create one
+              Login
             </Link>
+          </p>
+          <div className="flex justify-center items-center space-x-2 my-6.5">
+            <CustomCheckbox
+              id="receive-updates"
+              defaultChecked
+            />
+            <label
+              htmlFor="receive-updates"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-cc-primary-2-400">
+              I want to receive updates about Inkwave
+            </label>
+          </div>
+          <p>
+            By signing up you consent to our <span className="text-cc-primary font-semibold cursor-pointer">Terms and Conditions</span> and{" "}
+            <span className="text-cc-primary font-semibold cursor-pointer">Privacy Policy</span>
           </p>
         </div>
       </form>

@@ -1,0 +1,89 @@
+@theme {
+  /* PRIMARY */
+  --color-cc-primary-100: #ffd7eb;
+  --color-cc-primary-200: #ff80bf;
+  --color-cc-primary-300: #ff2893;
+  --color-cc-primary-400: #ff007f;
+  --color-cc-primary-500: #e70073;
+  --color-cc-primary-600: #ae0057;
+  --color-cc-primary-700: #6a0035;
+  --color-cc-primary: #ff007f;
+
+  /* PRIMARY 2 */
+  --color-cc-primary-2-100: #dfdfdf;
+  --color-cc-primary-2-200: #bdbdbd;
+  --color-cc-primary-2-300: #959595;
+  --color-cc-primary-2-400: #6a6a6a;
+  --color-cc-primary-2-500: #424242;
+  --color-cc-primary-2-600: #202020;
+  --color-cc-primary-2-700: #090909;
+  --color-cc-primary-2-800: #000000;
+  --color-cc-primary-2: #000000;
+
+  /* SECONDARY */
+  --color-cc-secondary-100: #ffe1cc;
+  --color-cc-secondary-200: #ffab6d;
+  --color-cc-secondary-300: #ff8d3a;
+  --color-cc-secondary-400: #ff8125;
+  --color-cc-secondary-500: #ee6400;
+  --color-cc-secondary-600: #a94700;
+  --color-cc-secondary-700: #642a00;
+  --color-cc-secondary: #ff8d3a;
+
+  /* ACCENT */
+  --color-cc-accent-100: #dbe9fb;
+  --color-cc-accent-200: #8db9f3;
+  --color-cc-accent-300: #3e89ec;
+  --color-cc-accent-400: #1a73e8;
+  --color-cc-accent-500: #1568d4;
+  --color-cc-accent-600: #104ea0;
+  --color-cc-accent-700: #0a3062;
+  --color-cc-accent: #1a73e8;
+
+  /* NEUTRAL */
+  --color-cc-neutral-100: #ffffff;
+  --color-cc-neutral-200: #e8e8e8;
+  --color-cc-neutral-300: #d2d2d2;
+  --color-cc-neutral-400: #bbbbbb;
+  --color-cc-neutral-500: #a4a4a4;
+  --color-cc-neutral-600: #8e8e8e;
+  --color-cc-neutral-700: #777777;
+  --color-cc-neutral-800: #606060;
+  --color-cc-neutral-900: #4a4a4a;
+  --color-cc-neutral-1000: #333333;
+
+  /* STROKE */
+  --color-cc-stroke-100: #ebebeb;
+  --color-cc-stroke-200: #e0e0e0;
+
+  /* BACKGROUND */
+  --color-cc-background-1: #f9f9f9;
+  --color-cc-background-2: #f7f9fc;
+  --color-cc-background-3: #ffffff;
+  --color-cc-background-4: #f6f9fe;
+  --color-cc-background-5: #d2ffd4;
+  --color-cc-background-6: #ffe0ca;
+  --color-cc-background-7: #fbe7f3;
+  --color-cc-background-8: #ede9fe;
+  --color-cc-background-9: #fef3c7;
+
+  /* SUPPORT */
+  --color-cc-support-1: #8163ff;
+  --color-cc-support-2: #ff82cd;
+  --color-cc-support-3: #f5c400;
+  --color-cc-support-4: #79640d;
+  --color-cc-support-5: #26d08c;
+  --color-cc-support-6: #d1005f;
+
+  /* ALERT */
+  --color-cc-alert-1: #f84437;
+  --color-cc-alert-2: #ffdb43;
+  --color-cc-alert-3: #43a047;
+
+  /* RING PRESETS */
+  --color-cc-preset-1: #db2777;
+  --color-cc-preset-2: #3e89ec;
+  --color-cc-preset-3: #9333ea;
+  --color-cc-preset-4: #ff5c00;
+  --color-cc-preset-5: #ff8d3a;
+}
