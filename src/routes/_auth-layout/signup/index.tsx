@@ -3,6 +3,8 @@ import CustomCheckbox from "@/components/common/custom-checkbox";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
+import { env } from "@/config/env";
+import { signUp } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { SignupSchema } from "@/schemas/auth";
 import { useForm, useStore } from "@tanstack/react-form";
@@ -29,8 +31,18 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
-        toast.success("Registered successfully");
+        const { error } = await signUp.email({
+          name: value.name,
+          email: value.email,
+          password: value.password,
+          callbackURL: `${env.frontendUrl}/login`
+        });
+
+        if (error) {
+          toast.error(error.message ?? "Failed to register");
+          return;
+        }
+        toast.success("Registered! Please check your email to verify your account.");
       } catch (err: any) {
         toast.error(err.message ?? "Failed to register");
       }

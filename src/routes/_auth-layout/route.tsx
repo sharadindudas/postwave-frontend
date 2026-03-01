@@ -11,14 +11,14 @@ export const Route = createFileRoute("/_auth-layout")({
 function RouteComponent() {
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center relative font-cc-inter overflow-hidden"
+      className="flex items-center justify-center min-h-screen bg-cover bg-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${authBgPattern})`,
         backgroundSize: "cover"
       }}>
       <div>
         <div className="absolute left-16 top-1/2 -translate-y-1/2 text-cc-neutral-100 w-md">
-          <h2 className="text-5xl uppercase font-semibold mb-5 font-general-sans-medium leading-16">Engaging & Conversational</h2>
+          <h2 className="text-5xl uppercase font-semibold mb-5 leading-16">Engaging & Conversational</h2>
           <p className="text-xl">From inbox to action—what started as a newsletter is now an interactive space for exclusive updates and insights.</p>
         </div>
 

@@ -2,6 +2,7 @@ import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
+import { signIn } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { LoginSchema } from "@/schemas/auth";
 import { useForm, useStore } from "@tanstack/react-form";
@@ -27,7 +28,21 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
+        const { error } = await signIn.email({
+          email: value.email,
+          password: value.password,
+          callbackURL: "/dashboard"
+        });
+
+        if (error) {
+          if (error.code === "EMAIL_NOT_VERIFIED") {
+            toast.error("Please verify your email before logging in");
+            return;
+          }
+          toast.error(error.message ?? "Failed to login");
+          return;
+        }
+
         toast.success("Logged in successfully");
         form.reset();
       } catch (err: any) {
@@ -35,6 +50,7 @@ function RouteComponent() {
       }
     }
   });
+
   const password = useStore(form.store, (state) => state.values.password);
 
   return (
