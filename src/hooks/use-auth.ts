@@ -5,8 +5,5 @@ export function useAuth() {
     from: "/_authenticated-layout"
   });
 
-  return {
-    user,
-    isOnboarded: user?.isOnboarded ?? false
-  };
+  return { user };
 }

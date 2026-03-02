@@ -1,4 +1,4 @@
-import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
+import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
 import CustomCheckbox from "@/components/common/custom-checkbox";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
@@ -57,7 +57,12 @@ function RouteComponent() {
   return (
     <>
       <div className="space-y-2">
-        <InkwaveLogoBigIcon className="mb-10" />
+        <img
+          src={inkwaveLogoText}
+          alt="inkwave-logo"
+          className="mb-10"
+          loading="lazy"
+        />
         <h3 className="text-3xl font-semibold text-cc-primary-2">Let's get started with Launch ✨</h3>
         <p className="text-cc-primary-2-400 text-sm">One-time phone verification via SMS is required for signup. Msg and data rates may apply.</p>
       </div>
@@ -148,7 +153,6 @@ function RouteComponent() {
             />
           )}
         />
-        {/* <GoogleLoginButton /> */}
         <div className="text-center font-medium text-sm">
           <p className="space-x-2 mt-4">
             <span className="text-cc-primary-2-400">Already have an account?</span>

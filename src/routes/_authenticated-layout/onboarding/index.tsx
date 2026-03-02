@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import StepOne from "./-components/step-one";
 
 export const Route = createFileRoute("/_authenticated-layout/onboarding/")({
   beforeLoad: async ({ context }) => {
@@ -12,6 +13,11 @@ export const Route = createFileRoute("/_authenticated-layout/onboarding/")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  return <div>Onboarding {user?.name}</div>;
+
+  return (
+    <div className="bg-cc-background-2 font-cc-inter min-h-screen flex flex-col items-center justify-center">
+      <StepOne journey={user?.journey} />
+    </div>
+  );
 }
 

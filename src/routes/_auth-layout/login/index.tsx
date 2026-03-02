@@ -1,4 +1,4 @@
-import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
+import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
@@ -34,12 +34,10 @@ function RouteComponent() {
           password: value.password,
           callbackURL: "/dashboard"
         });
-
         if (error) {
           showApiError(error, "Login failed");
           return;
         }
-
         toast.success("Logged in");
         form.reset();
       } catch (err: any) {
@@ -53,7 +51,12 @@ function RouteComponent() {
   return (
     <>
       <div className="space-y-3">
-        <InkwaveLogoBigIcon className="mb-10" />
+        <img
+          src={inkwaveLogoText}
+          alt="inkwave-logo"
+          className="mb-10"
+          loading="lazy"
+        />
         <h3 className="text-3xl font-semibold text-cc-primary-2">Log In to Inkwave</h3>
         <p className="text-cc-primary-2-400 text-sm">Welcome back! Stay updated with the latest insights from our exclusive newsletter.</p>
       </div>

@@ -1,6 +1,6 @@
 import type { authClient } from "@/lib/auth-client";
 
-type Session = typeof authClient.$Infer.Session & {
+export type Session = typeof authClient.$Infer.Session & {
   user: User;
 };
 
@@ -29,6 +29,7 @@ export interface User {
   tiktok?: string | null;
 }
 
-export interface RouterContext {
-  user: Session["user"] | null;
-}
+export type SelectOption = {
+  id: string;
+  name: string;
+};

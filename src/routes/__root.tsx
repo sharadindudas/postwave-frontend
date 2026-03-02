@@ -1,8 +1,12 @@
-import type { RouterContext } from "@/types/common";
+import type { Session } from "@/types/common";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { Toaster } from "react-hot-toast";
 
-export const Route = createRootRouteWithContext<RouterContext>()({
+interface MyRouterContext {
+  user: Session["user"] | null;
+}
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
       <Outlet />
