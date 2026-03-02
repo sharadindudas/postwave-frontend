@@ -2,8 +2,11 @@ import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
+import { env } from "@/config/env";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { ForgotPasswordSchema } from "@/schemas/auth";
+import { showApiError } from "@/utils/common";
 import { useForm } from "@tanstack/react-form";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
@@ -25,10 +28,22 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
+        const { error } = await authClient.requestPasswordReset({
+          email: value.email,
+          redirectTo: `${env.frontendUrl}/reset-password`
+        });
+
+        if (error) {
+          showApiError(error, "Couldn't send reset link");
+          return;
+        }
+
+        toast.success("Reset link sent");
+        form.reset();
+
         setIsEmailSuccess(true);
       } catch (err: any) {
-        toast.error(err.message ?? "Failed to forgot password");
+        showApiError(err, "Couldn't send reset link");
       }
     }
   });

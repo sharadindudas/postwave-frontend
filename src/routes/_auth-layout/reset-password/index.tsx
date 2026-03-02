@@ -2,15 +2,20 @@ import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { UpdatePasswordSchema } from "@/schemas/auth";
+import { showApiError } from "@/utils/common";
 import { useForm, useStore } from "@tanstack/react-form";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/_auth-layout/forgot-password/$token/")({
+export const Route = createFileRoute("/_auth-layout/reset-password/")({
+  validateSearch: (search) => ({
+    token: (search.token as string) ?? ""
+  }),
   component: RouteComponent
 });
 
@@ -18,8 +23,8 @@ function RouteComponent() {
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
 
-  const { token } = Route.useParams();
-  console.log(token);
+  const { token } = Route.useSearch();
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: {
@@ -31,9 +36,22 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
+        const { error } = await authClient.resetPassword({
+          newPassword: value.newPassword,
+          token
+        });
+
+        if (error) {
+          showApiError(error, "Couldn't update password");
+          return;
+        }
+
+        toast.success("Password updated");
+        form.reset();
+
+        navigate({ to: "/login" });
       } catch (err: any) {
-        toast.error(err.message ?? "Failed to update password");
+        showApiError(err, "Couldn't update password");
       }
     }
   });

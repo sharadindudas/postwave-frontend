@@ -2,9 +2,15 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
+import type { RouterContext } from "./types/common";
 import "@/styles/index.css";
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  context: {
+    user: null
+  } satisfies RouterContext
+});
 
 declare module "@tanstack/react-router" {
   interface Register {

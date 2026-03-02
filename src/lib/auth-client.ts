@@ -5,5 +5,3 @@ export const authClient = createAuthClient({
   baseURL: env.oltpBaseUrl,
   basePath: "/api/v1/auth"
 });
-
-export const { signIn, signUp, signOut, useSession, getSession } = authClient;

@@ -1,9 +1,21 @@
 import authBgPattern from "@/assets/auth-bg-pattern.svg";
 import authBgScreen from "@/assets/auth-bg-screen.svg";
 import PageLoader from "@/components/common/page-loader";
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { authClient } from "@/lib/auth-client";
+import type { User } from "@/types/common";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth-layout")({
+  beforeLoad: async () => {
+    const { data: session } = await authClient.getSession();
+
+    if (session) {
+      const user = session.user as User;
+      throw redirect({
+        to: user.isOnboarded ? "/dashboard" : "/onboarding"
+      });
+    }
+  },
   pendingComponent: PageLoader,
   component: RouteComponent
 });

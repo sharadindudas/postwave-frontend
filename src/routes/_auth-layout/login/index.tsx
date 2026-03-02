@@ -2,9 +2,10 @@ import InkwaveLogoBigIcon from "@/assets/inkwave-logo-big";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
-import { signIn } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { LoginSchema } from "@/schemas/auth";
+import { showApiError } from "@/utils/common";
 import { useForm, useStore } from "@tanstack/react-form";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
@@ -28,25 +29,21 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const { error } = await signIn.email({
+        const { error } = await authClient.signIn.email({
           email: value.email,
           password: value.password,
           callbackURL: "/dashboard"
         });
 
         if (error) {
-          if (error.code === "EMAIL_NOT_VERIFIED") {
-            toast.error("Please verify your email before logging in");
-            return;
-          }
-          toast.error(error.message ?? "Failed to login");
+          showApiError(error, "Login failed");
           return;
         }
 
-        toast.success("Logged in successfully");
+        toast.success("Logged in");
         form.reset();
       } catch (err: any) {
-        toast.error(err.message ?? "Failed to login");
+        showApiError(err, "Login failed");
       }
     }
   });

@@ -4,9 +4,10 @@ import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
 import { env } from "@/config/env";
-import { signUp } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { SignupSchema } from "@/schemas/auth";
+import { showApiError } from "@/utils/common";
 import { useForm, useStore } from "@tanstack/react-form";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
@@ -31,7 +32,7 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const { error } = await signUp.email({
+        const { error } = await authClient.signUp.email({
           name: value.name,
           email: value.email,
           password: value.password,
@@ -39,12 +40,14 @@ function RouteComponent() {
         });
 
         if (error) {
-          toast.error(error.message ?? "Failed to register");
+          showApiError(error, "Registration failed");
           return;
         }
-        toast.success("Registered! Please check your email to verify your account.");
+
+        toast.success("Check your email to verify");
+        form.reset();
       } catch (err: any) {
-        toast.error(err.message ?? "Failed to register");
+        showApiError(err, "Registration failed");
       }
     }
   });
