@@ -27,8 +27,7 @@ const SubmitButton = ({
       size={size}
       disabled={!isValid || isSubmitting}
       className={className}
-      type="submit"
-    >
+      type="submit">
       {isSubmitting ? (
         <div className="flex items-center gap-2">
           <Loader2 className="animate-spin" />

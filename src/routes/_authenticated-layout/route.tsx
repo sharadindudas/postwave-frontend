@@ -20,4 +20,3 @@ export const Route = createFileRoute("/_authenticated-layout")({
 function RouteComponent() {
   return <Outlet />;
 }
-

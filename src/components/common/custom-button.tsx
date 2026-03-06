@@ -32,8 +32,7 @@ export default function CustomButton({
       variant={variant}
       className={className}
       disabled={disabled}
-      {...props}
-    >
+      {...props}>
       {Icon && iconPosition === "left" && <Icon className={cn("size-5", iconClassName)} />}
       {children}
       {Icon && iconPosition === "right" && <Icon className={cn("size-5", iconClassName)} />}

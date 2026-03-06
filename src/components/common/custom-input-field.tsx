@@ -9,7 +9,7 @@ export default function CustomInputField({ className, ...props }: CustomInputFie
     <Input
       className={cn(
         "text-sm h-12 px-3 border bg-cc-neutral-100 border-cc-stroke-100 placeholder:text-cc-primary-2-300 focus-visible:ring-0",
-        className,
+        className
       )}
       autoComplete="on"
       {...props}

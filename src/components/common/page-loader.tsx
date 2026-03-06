@@ -14,4 +14,3 @@ export default function PageLoader({ className, children }: PageLoaderProps) {
     </div>
   );
 }
-
