@@ -3,7 +3,7 @@ import CustomCheckbox from "@/components/common/custom-checkbox";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
-import { env } from "@/config/env";
+import { FRONTEND_URL } from "@/config";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { SignupSchema } from "@/schemas/auth";
@@ -36,7 +36,7 @@ function RouteComponent() {
           name: value.name,
           email: value.email,
           password: value.password,
-          callbackURL: `${env.frontendUrl}/login`
+          callbackURL: `${FRONTEND_URL}/login`
         });
 
         if (error) {

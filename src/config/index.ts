@@ -4,7 +4,5 @@ function requireEnv(key: string): string {
   return value;
 }
 
-export const env = {
-  oltpBaseUrl: requireEnv("VITE_OLTP_BASE_URL"),
-  frontendUrl: requireEnv("VITE_FRONTEND_URL")
-} as const;
+export const OLTP_BASE_URL = requireEnv("VITE_OLTP_BASE_URL"),
+  FRONTEND_URL = requireEnv("VITE_FRONTEND_URL");

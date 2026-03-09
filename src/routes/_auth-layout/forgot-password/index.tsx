@@ -2,7 +2,7 @@ import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
 import SubmitButton from "@/components/common/submit-button";
-import { env } from "@/config/env";
+import { FRONTEND_URL } from "@/config";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { ForgotPasswordSchema } from "@/schemas/auth";
@@ -30,7 +30,7 @@ function RouteComponent() {
       try {
         const { error } = await authClient.requestPasswordReset({
           email: value.email,
-          redirectTo: `${env.frontendUrl}/reset-password`
+          redirectTo: `${FRONTEND_URL}/reset-password`
         });
 
         if (error) {
