@@ -15,48 +15,8 @@ import { useForm } from "@tanstack/react-form";
 import { Check, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-interface StepThreeProps {
-  onPrevious: () => void;
-}
-
-export default function StepThree({ onPrevious }: StepThreeProps) {
+export default function StepThree() {
   const [open, setOpen] = useState<boolean>(false);
-  const [subdomainCheckState, setSubdomainCheckState] = useState<{
-    isChecking: boolean;
-    isUnique: boolean | null;
-    lastCheckedSubdomain: string;
-  }>({
-    isChecking: false,
-    isUnique: null,
-    lastCheckedSubdomain: ""
-  });
-
-  const checkSubdomainUniqueness = async (subdomain: string): Promise<boolean> => {
-    const takenSubdomains = ["test-subdomain", "admin-subdomain", "user-subdomain", "demo-subdomain"];
-    return !takenSubdomains.includes(subdomain.toLowerCase());
-  };
-
-  const handleSubdomainAvailabilityCheck = async (subdomain: string) => {
-    //TODO: Make an API call to check subdomain
-    if (subdomain === subdomainCheckState.lastCheckedSubdomain) return;
-    setSubdomainCheckState((prev) => ({ ...prev, isChecking: true }));
-
-    try {
-      const isUnique = await checkSubdomainUniqueness(subdomain);
-      setSubdomainCheckState({
-        isChecking: false,
-        isUnique,
-        lastCheckedSubdomain: subdomain
-      });
-    } catch (err) {
-      console.error(err);
-      setSubdomainCheckState({
-        isChecking: false,
-        isUnique: null,
-        lastCheckedSubdomain: subdomain
-      });
-    }
-  };
 
   const topics = TOPICS;
 
@@ -80,7 +40,7 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
   });
 
   return (
-    <SectionWrapper className="max-4xl">
+    <SectionWrapper className="max-w-4xl">
       <form
         noValidate
         onSubmit={(e) => {
@@ -109,7 +69,6 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
               onChange: ({ value }) => {
                 const subdomain = value?.toLowerCase().split(" ").join("-");
                 form.setFieldValue("subdomain", subdomain);
-                handleSubdomainAvailabilityCheck(subdomain);
               }
             }}>
             {(field) => (
@@ -129,22 +88,7 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
               </CustomFormField>
             )}
           </form.Field>
-          <form.Field
-            name="subdomain"
-            listeners={{
-              onChangeDebounceMs: 800,
-              onChange: ({ value }) => {
-                if (value && value.length >= 3) {
-                  handleSubdomainAvailabilityCheck(value);
-                } else {
-                  setSubdomainCheckState({
-                    isChecking: false,
-                    isUnique: null,
-                    lastCheckedSubdomain: ""
-                  });
-                }
-              }
-            }}>
+          <form.Field name="subdomain">
             {(field) => (
               <CustomFormField
                 label="Set Subdomain Name"
@@ -160,9 +104,7 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
                     placeholder="Subdomain Name"
                     className={cn(
                       "flex-1 rounded-r-none",
-                      !field.state.meta.isValid && "text-cc-alert-1 border-cc-alert-1 focus-visible:border-cc-alert-1",
-                      subdomainCheckState.isUnique === true && "text-cc-alert-3",
-                      subdomainCheckState.isUnique === false && "text-cc-alert-1"
+                      !field.state.meta.isValid && "text-cc-alert-1 border-cc-alert-1 focus-visible:border-cc-alert-1"
                     )}
                   />
                   <Input
@@ -172,9 +114,6 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
                     className="h-12 w-28 rounded-l-none border-l-0 outline-0 focus-visible:border-cc-stroke-100"
                   />
                 </div>
-                {field.state.value.length >= 3 && subdomainCheckState.isUnique === false && (
-                  <div className="-mt-1.5 text-sm text-cc-alert-1">Subdomain is not available</div>
-                )}
               </CustomFormField>
             )}
           </form.Field>
@@ -196,10 +135,10 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
                 }
               };
 
-            //   const handleRemove = (valueToRemove: string) => {
-            //     const newSelected = value.filter((item) => item !== valueToRemove);
-            //     handleChange(newSelected);
-            //   };
+              //   const handleRemove = (valueToRemove: string) => {
+              //     const newSelected = value.filter((item) => item !== valueToRemove);
+              //     handleChange(newSelected);
+              //   };
 
               const handleOpenChange = (newOpen: boolean) => {
                 setOpen(newOpen);
@@ -323,22 +262,17 @@ export default function StepThree({ onPrevious }: StepThreeProps) {
           </form.Field> */}
         </div>
 
-        <div className="flex justify-between gap-3">
-          <CustomButton
-            children="Previous"
-            onClick={onPrevious}
-          />
-          <form.Subscribe
-            selector={(state) => [state.isValid, state.isSubmitting]}
-            children={([isValid, isSubmitting]) => (
-              <SubmitButton
-                isValid={isValid}
-                isSubmitting={isSubmitting}
-                children="Continue"
-              />
-            )}
-          />
-        </div>
+        <form.Subscribe
+          selector={(state) => [state.isValid, state.isSubmitting]}
+          children={([isValid, isSubmitting]) => (
+            <SubmitButton
+              isValid={isValid}
+              isSubmitting={isSubmitting}
+              className="w-full"
+              children="Continue"
+            />
+          )}
+        />
       </form>
     </SectionWrapper>
   );

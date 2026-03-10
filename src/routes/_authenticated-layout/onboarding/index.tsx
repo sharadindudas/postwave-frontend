@@ -1,8 +1,8 @@
 import { useAuth } from "@/hooks/use-auth";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import StepOne from "./-components/step-one";
+import StepThree from "./-components/step-three";
 import StepTwo from "./-components/step-two";
-import { useUpdateUserOnboarding } from "@/hooks/mutations/use-update-user-onboarding";
 
 export const Route = createFileRoute("/_authenticated-layout/onboarding/")({
   beforeLoad: async ({ context }) => {
@@ -15,27 +15,17 @@ export const Route = createFileRoute("/_authenticated-layout/onboarding/")({
 
 function RouteComponent() {
   const { user } = useAuth();
-  const { mutateAsync } = useUpdateUserOnboarding();
-  console.log("Onboarding details ====", user.onboardingStep, user.journey);
 
-  const goToStep = async (step: number) => {
-    await mutateAsync({ onboardingStep: step });
-  };
-
-  const handlePrevious = () => goToStep(user.onboardingStep - 1);
-  const handleSkip = () => goToStep(user.onboardingStep + 1);
+  const currentStep = user.onboardingStep;
 
   const renderCurrentStep = () => {
-    switch (user.onboardingStep) {
+    switch (currentStep) {
       case 1:
         return <StepOne journey={user.journey} />;
       case 2:
-        return (
-          <StepTwo
-            onPrevious={handlePrevious}
-            onSkip={handleSkip}
-          />
-        );
+        return <StepTwo platformsUsed={user.platformsUsed} />;
+      case 3:
+        return <StepThree />;
     }
   };
 

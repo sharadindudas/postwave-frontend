@@ -1,37 +1,41 @@
 import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
-import CustomButton from "@/components/common/custom-button";
 import SectionWrapper from "@/components/common/section-wrapper";
 import SubmitButton from "@/components/common/submit-button";
 import { PLATFORMS_USED } from "@/data/onboarding";
+import { useUpdateUserOnboarding } from "@/hooks/mutations/use-update-user-onboarding";
 import { cn } from "@/lib/utils";
 import { StepTwoSchema } from "@/schemas/onboarding";
+import type { User } from "@/types/common";
 import { showApiError } from "@/utils/common";
 import { useForm } from "@tanstack/react-form";
 import { MousePointerClick } from "lucide-react";
 
 interface StepTwoProps {
-  onPrevious: () => void;
-  onSkip: () => void;
+  platformsUsed: User["platformsUsed"];
 }
 
-export default function StepTwo({ onPrevious, onSkip }: StepTwoProps) {
+export default function StepTwo({ platformsUsed }: StepTwoProps) {
+  const { mutateAsync } = useUpdateUserOnboarding();
   const form = useForm({
     defaultValues: {
-      platforms: []
+      platforms: platformsUsed ? platformsUsed.split(", ") : []
     } as StepTwoSchema,
     validators: {
       onSubmit: StepTwoSchema
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
+        await mutateAsync({
+          platformsUsed: value.platforms.join(", "),
+          onboardingStep: 3
+        });
       } catch (err) {
         showApiError(err, "Failed to complete onboarding step two");
       }
     }
   });
 
-  const togglePlatform = (platformName: string) => {
+  const handleTogglePlatform = (platformName: string) => {
     form.setFieldValue("platforms", (prev) => (prev.includes(platformName) ? prev.filter((name) => name !== platformName) : [...prev, platformName]));
   };
 
@@ -63,7 +67,7 @@ export default function StepTwo({ onPrevious, onSkip }: StepTwoProps) {
                     <button
                       type="button"
                       key={platform.id}
-                      onClick={() => togglePlatform(platform.name)}
+                      onClick={() => handleTogglePlatform(platform.name)}
                       className={cn(
                         "h-10 px-3 border-2 transition-all duration-200 text-sm font-medium relative rounded-sm",
                         field.state.value.includes(platform.name)
@@ -87,29 +91,16 @@ export default function StepTwo({ onPrevious, onSkip }: StepTwoProps) {
           </form.Field>
         </div>
 
-        <div className="flex justify-between gap-3">
-          <CustomButton
-            children="Previous"
-            onClick={onPrevious}
-          />
-          <div className="space-x-4">
-            <CustomButton
-              variant="outline"
-              children="Skip"
-              onClick={onSkip}
+        <form.Subscribe
+          selector={(state) => [state.isValid, state.isSubmitting]}
+          children={([isValid, isSubmitting]) => (
+            <SubmitButton
+              isValid={isValid}
+              isSubmitting={isSubmitting}
+              children="Continue"
             />
-            <form.Subscribe
-              selector={(state) => [state.isValid, state.isSubmitting]}
-              children={([isValid, isSubmitting]) => (
-                <SubmitButton
-                  isValid={isValid}
-                  isSubmitting={isSubmitting}
-                  children="Continue"
-                />
-              )}
-            />
-          </div>
-        </div>
+          )}
+        />
       </form>
     </SectionWrapper>
   );
