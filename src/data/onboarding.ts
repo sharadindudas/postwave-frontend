@@ -72,6 +72,8 @@ export const CATEGORIES: SelectOption[] = [
   { id: "psychology", name: "Psychology" }
 ];
 
+export const TOPICS: SelectOption[] = [{ id: "topic", name: "Topic" }];
+
 export const PUBLISH_PLANS: SelectOption[] = [
   { id: "daily", name: "Daily" },
   { id: "2-3times", name: "2-3 times a week" },

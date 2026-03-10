@@ -1,19 +1,21 @@
 import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
+import SectionWrapper from "@/components/common/section-wrapper";
+import SubmitButton from "@/components/common/submit-button";
 import { JOURNEY } from "@/data/onboarding";
+import { useUpdateUserOnboarding } from "@/hooks/mutations/use-update-user-onboarding";
 import { cn } from "@/lib/utils";
 import { StepOneSchema } from "@/schemas/onboarding";
 import type { User } from "@/types/common";
 import { showApiError } from "@/utils/common";
 import { useForm } from "@tanstack/react-form";
-import SectionWrapper from "@/components/common/section-wrapper";
-import CustomButton from "@/components/common/custom-button";
-import SubmitButton from "@/components/common/submit-button";
 
 interface StepOneProps {
   journey: User["journey"];
 }
 
 export default function StepOne({ journey }: StepOneProps) {
+  const { mutateAsync } = useUpdateUserOnboarding();
+
   const form = useForm({
     defaultValues: {
       journey: journey ?? "beginner"
@@ -23,14 +25,12 @@ export default function StepOne({ journey }: StepOneProps) {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
+        await mutateAsync({ ...value, onboardingStep: value.journey === "experienced" ? 2 : 3 });
       } catch (err) {
-        showApiError(err, "Failed to complete onboarding step one");
+        showApiError(err, "Failed to complete onboarding");
       }
     }
   });
-
-  const handleSkip = () => {};
 
   return (
     <SectionWrapper className="max-w-3xl">
@@ -80,24 +80,17 @@ export default function StepOne({ journey }: StepOneProps) {
           )}
         </form.Field>
 
-        <div className="flex items-center justify-end gap-3">
-          <CustomButton
-            type="button"
-            variant="outline"
-            onClick={handleSkip}
-            children="Skip"
-          />
-          <form.Subscribe
-            selector={(state) => [state.isValid, state.isSubmitting]}
-            children={([isValid, isSubmitting]) => (
-              <SubmitButton
-                isValid={isValid}
-                isSubmitting={isSubmitting}
-                children="Get Started"
-              />
-            )}
-          />
-        </div>
+        <form.Subscribe
+          selector={(state) => [state.isValid, state.isSubmitting]}
+          children={([isValid, isSubmitting]) => (
+            <SubmitButton
+              isValid={isValid}
+              isSubmitting={isSubmitting}
+              className="w-full"
+              children="Get Started"
+            />
+          )}
+        />
       </form>
     </SectionWrapper>
   );
