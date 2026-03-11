@@ -29,5 +29,5 @@ function RouteComponent() {
     }
   };
 
-  return <div className="bg-cc-background-2 font-cc-inter min-h-screen flex flex-col items-center justify-center">{renderCurrentStep()}</div>;
+  return <div className="bg-cc-background-2 min-h-screen flex flex-col items-center justify-center">{renderCurrentStep()}</div>;
 }

@@ -18,7 +18,7 @@ export const StepOneSchema = v.object({
 export type StepOneSchema = v.InferInput<typeof StepOneSchema>;
 
 export const StepTwoSchema = v.object({
-  platforms: v.pipe(v.array(v.pipe(v.string(), v.trim())), v.minLength(1, "Please select at least one platform"))
+  platforms: v.pipe(v.array(v.string()), v.minLength(1, "Please select at least one platform"))
 });
 export type StepTwoSchema = v.InferInput<typeof StepTwoSchema>;
 
@@ -27,7 +27,7 @@ export const StepThreeSchema = v.object({
   subdomain: v.pipe(v.string(), v.nonEmpty("Please provide a subdomain name")),
   topics: v.pipe(
     v.array(v.pipe(v.string(), v.trim())),
-    v.minLength(1, "Please select at least one categories"),
+    v.minLength(1, "Please select at least one category"),
     v.maxLength(3, "Please select maximum 3 categories")
   ),
   publish_interval: v.pipe(v.string(), v.nonEmpty("Please provide a publish plan"))

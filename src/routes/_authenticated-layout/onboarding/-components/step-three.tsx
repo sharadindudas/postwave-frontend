@@ -1,18 +1,20 @@
 import inkwaveLogoText from "@/assets/inkwave-logo-text.svg";
+import CustomBadge from "@/components/common/custom-badge";
 import CustomButton from "@/components/common/custom-button";
 import CustomFormField from "@/components/common/custom-form-field";
 import CustomInputField from "@/components/common/custom-input-field";
+import CustomSelect from "@/components/common/custom-select";
 import SectionWrapper from "@/components/common/section-wrapper";
 import SubmitButton from "@/components/common/submit-button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { TOPICS } from "@/data/onboarding";
+import { PUBLISH_PLANS, TOPICS } from "@/data/onboarding";
 import { cn } from "@/lib/utils";
 import { StepThreeSchema } from "@/schemas/onboarding";
 import { showApiError } from "@/utils/common";
 import { useForm } from "@tanstack/react-form";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 
 export default function StepThree() {
@@ -48,17 +50,15 @@ export default function StepThree() {
           e.stopPropagation();
           form.handleSubmit();
         }}>
-        <div>
-          <img
-            src={inkwaveLogoText}
-            alt="inkwave-logo"
-            className="mx-auto"
-          />
-          <div className="space-y-2">
-            <h3>This is our favorite part! Let&apos;s create your publication.</h3>
-            <p className="text-cc-primary-2-400 text-sm font-normal mt-1">By the way, my name is Andrew</p>
-            <p className="text-cc-primary-2-400 text-sm">I&apos;m part of the inkwave team, here to help you get up and running on the platform.</p>
-          </div>
+        <img
+          src={inkwaveLogoText}
+          alt="inkwave-logo"
+          className="mx-auto mb-4"
+        />
+        <div className="space-y-1.5">
+          <h3 className="common-heading">This is our favorite part! Let&apos;s create your publication.</h3>
+          <p className="common-paragraph">By the way, my name is Andrew</p>
+          <p className="common-paragraph">I&apos;m part of the inkwave team, here to help you get up and running on the platform.</p>
         </div>
 
         <div className="space-y-5 my-6">
@@ -135,10 +135,10 @@ export default function StepThree() {
                 }
               };
 
-              //   const handleRemove = (valueToRemove: string) => {
-              //     const newSelected = value.filter((item) => item !== valueToRemove);
-              //     handleChange(newSelected);
-              //   };
+              const handleRemove = (valueToRemove: string) => {
+                const newSelected = value.filter((item) => item !== valueToRemove);
+                handleChange(newSelected);
+              };
 
               const handleOpenChange = (newOpen: boolean) => {
                 setOpen(newOpen);
@@ -147,7 +147,7 @@ export default function StepThree() {
                 }
               };
 
-              const availableOptions = (topics ?? []).filter((option) => option.name && !value.includes(option.name));
+              const availableOptions = topics.filter((option) => option.name && !value.includes(option.name));
 
               return (
                 <CustomFormField
@@ -168,7 +168,7 @@ export default function StepThree() {
                       </CustomButton>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="p-0 font-cc-inter"
+                      className="p-0"
                       style={{
                         width: "var(--radix-popover-trigger-width)"
                       }}>
@@ -205,15 +205,14 @@ export default function StepThree() {
                     </PopoverContent>
                   </Popover>
 
-                  {/* {value.length > 0 && (
+                  {value.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {value.map((selectedValue) => {
                         const option = (topics ?? []).find((opt) => opt.id === selectedValue);
                         return (
-                          <Badge
+                          <CustomBadge
                             key={selectedValue}
-                            variant="secondary"
-                            className="text-sm border border-cc-primary-2-400 px-3 py-1.5 bg-cc-neutral-100">
+                            variant="outline">
                             {option?.name ?? selectedValue}
                             <button
                               type="button"
@@ -227,21 +226,23 @@ export default function StepThree() {
                                 e.preventDefault();
                                 e.stopPropagation();
                               }}
-                              onClick={() => handleRemove(selectedValue)}
                               aria-label="Remove selected topic">
-                              <X className="size-3.5 text-muted-foreground hover:text-foreground" />
+                              <X
+                                className="size-3.5 text-muted-foreground hover:text-foreground"
+                                onClick={() => handleRemove(selectedValue)}
+                              />
                             </button>
-                          </Badge>
+                          </CustomBadge>
                         );
                       })}
                     </div>
-                  )} */}
+                  )}
                 </CustomFormField>
               );
             }}
           </form.Field>
 
-          {/* <form.Field name="publish_interval">
+          <form.Field name="publish_interval">
             {(field) => (
               <CustomFormField
                 label="How often do you plan to publish"
@@ -250,16 +251,13 @@ export default function StepThree() {
                   value={field.state.value ?? ""}
                   onValueChange={field.handleChange}
                   onOpenChange={(open) => !open && field.handleBlur()}
-                  items={PUBLISH_PLANS.map((plan) => ({
-                    id: plan.name,
-                    name: plan.name
-                  }))}
+                  items={PUBLISH_PLANS}
                   placeholder="Select an option"
                   selectTriggerClassName="w-full"
                 />
               </CustomFormField>
             )}
-          </form.Field> */}
+          </form.Field>
         </div>
 
         <form.Subscribe

@@ -18,7 +18,7 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
   const { mutateAsync } = useUpdateUserOnboarding();
   const form = useForm({
     defaultValues: {
-      platforms: platformsUsed ? platformsUsed.split(", ") : []
+      platforms: platformsUsed ? platformsUsed.split(",") : []
     } as StepTwoSchema,
     validators: {
       onSubmit: StepTwoSchema
@@ -26,7 +26,7 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
     onSubmit: async ({ value }) => {
       try {
         await mutateAsync({
-          platformsUsed: value.platforms.join(", "),
+          platformsUsed: value.platforms.join(","),
           onboardingStep: 3
         });
       } catch (err) {
@@ -34,10 +34,6 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
       }
     }
   });
-
-  const handleTogglePlatform = (platformName: string) => {
-    form.setFieldValue("platforms", (prev) => (prev.includes(platformName) ? prev.filter((name) => name !== platformName) : [...prev, platformName]));
-  };
 
   return (
     <SectionWrapper className="max-w-3xl">
@@ -52,7 +48,7 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
           <img
             src={inkwaveLogoText}
             alt="inkwave-logo"
-            className="mx-auto"
+            className="mx-auto mb-4"
           />
           <h3 className="common-heading">Which platforms have you used before?</h3>
           <p className="common-paragraph">This helps us understand your experience and tailor our support to what you're familiar with.</p>
@@ -67,7 +63,11 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
                     <button
                       type="button"
                       key={platform.id}
-                      onClick={() => handleTogglePlatform(platform.name)}
+                      onClick={() => {
+                        const prev = field.state.value;
+                        const next = prev.includes(platform.name) ? prev.filter((name) => name !== platform.name) : [...prev, platform.name];
+                        field.handleChange(next);
+                      }}
                       className={cn(
                         "h-10 px-3 border-2 transition-all duration-200 text-sm font-medium relative rounded-sm",
                         field.state.value.includes(platform.name)
@@ -98,6 +98,7 @@ export default function StepTwo({ platformsUsed }: StepTwoProps) {
               isValid={isValid}
               isSubmitting={isSubmitting}
               children="Continue"
+              className="w-full"
             />
           )}
         />
