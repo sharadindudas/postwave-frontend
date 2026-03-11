@@ -10,16 +10,9 @@ export interface User {
   email: string;
   emailVerified: boolean;
   image?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  isOnboarded: boolean;
-  onboardingStep: number;
-  journey?: string | null;
-  platformsUsed?: string | null;
-  source?: string | null;
-  goals?: string | null;
-  bio?: string | null;
   imagePublicId?: string | null;
+  isOnboarded: boolean;
+  bio?: string | null;
   x?: string | null;
   facebook?: string | null;
   linkedin?: string | null;
@@ -27,15 +20,17 @@ export interface User {
   youtube?: string | null;
   threads?: string | null;
   tiktok?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type SelectOption = {
+export interface SelectOption {
   id: string;
   name: string;
-};
+}
 
-export interface ApiResponse<T>{
-  success: boolean
-  message: string
-  data?: T
+export interface ApiResponse<T = null> {
+  success: boolean;
+  message: string;
+  data?: T;
 }
